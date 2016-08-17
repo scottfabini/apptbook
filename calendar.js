@@ -49,21 +49,35 @@ $(document).ready(function() {
     // Create the event (appointment), call fullCalendar to render it, and send it to the server.
     $(document).on('submit', '#calendar-form', function(e) {
         e.preventDefault(); // prevent refresh on submit
+        var description = $(this).find("#description").val();
         var beginDateTime = $(this).find("#beginDate").val() + " " + $(this).find("#beginTime").val();
         var endDateTime = $(this).find("#endDate").val() + " " + $(this).find("#endTime").val();
+
         var event = {
-            title: $(this).find("#description").val(),
+            title: description,
             start: $.fullCalendar.moment(beginDateTime, 'YYYY-MM-DD hh:mm a'),
             end: $.fullCalendar.moment(endDateTime, 'YYYY-MM-DD hh:mm a'),
             allDay: false,
             editable: true,
             backgroundColor: 'grey'
         };
-
-
-        // Do Ajax call
-
-        $('#calendar').fullCalendar('renderEvent', event, true);
+        // Do Ajax call.  Render event to calendar if call succeeds; else, don't.
+        jQuery.ajax({
+            'type': 'POST',
+            'url': 'localhost:8080/apptbook/' + "?description=" + description,
+            'data': {
+                'description': description,
+                'beginTime': beginDateTime,
+                'endDateTime': endDateTime
+            },
+            'timeout': 5000,
+            'success': function (data) {
+                $('#calendar').fullCalendar('renderEvent', event, true);
+            },
+            error: function() {
+                alert("Failed to write appointment to server.")
+            }
+        });
     });
 });
 
