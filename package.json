@@ -1,0 +1,17 @@
+{
+  "name": "apptbook",
+  "version": "0.0.1",
+  "description": "AppointmentBook (Calendar) Full Stack Web-App using js, jQuery, Bootstrap, Ajax, fullCalendar, node.js, mySQL",
+  "homepage": "http://github.com/scottfabini/apptbook",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/scottf/apptbook.git"
+  },
+  "author": "Scott Fabini <scott.fabini@gmail.com>",
+  "main": "./",
+  "dependencies": {
+    "express": "latest",
+    "pg": "latest"
+  },
+  "license": "MIT"
+}
