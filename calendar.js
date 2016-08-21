@@ -1,14 +1,18 @@
 /**
- * Created by sfabini on 8/16/16.
+ * Copyright (c) 2016 Scott Fabini (scott.fabini@gmail.com)
+ * All rights reserved.
+ *
+ * This source code is licensed under the MIT license found in the
+ * README.md file in the root directory of this source tree.
  */
-$(document).ready(function() {
+jQuery(document).ready(function() {
     // page is ready
     // enable bootstrap popover
-    $(function () {
-        $('[data-toggle="popover"]').popover();
+    jQuery(function () {
+        jQuery('[data-toggle="popover"]').popover();
     });
     // initialize fullcalendar
-    $('#calendar').fullCalendar({
+    jQuery('#calendar').fullCalendar({
         header: {
             left: 'prev,next today',
             center: 'title',
@@ -17,9 +21,9 @@ $(document).ready(function() {
         eventLimit: 2,
         editable: true,
         selectable: true,
-
+        // Click on a day to generate the popover
         dayClick: function(date, jsEvent, view) {
-            $(this).popover({
+            jQuery(this).popover({
                 html: true,
                 placement: 'top',
                 container: 'body',
@@ -27,36 +31,42 @@ $(document).ready(function() {
                 selectable: true,
                 // create the popover
                 title: function() {
-                    return $('#popover-head').html();
+                    return jQuery('#popover-head').html();
                 },
                 content: function() {
-                    $('#popover-content').find('#beginDate').attr('value', date.format("YYYY-MM-DD"));
-                    $('#popover-content').find('#endDate').attr('value', date.format("YYYY-MM-DD"));
-                    return $('#popover-content').html();
+                    jQuery('#popover-content').find('#beginDate').attr('value', date.format("YYYY-MM-DD"));
+                    jQuery('#popover-content').find('#endDate').attr('value', date.format("YYYY-MM-DD"));
+                    return jQuery('#popover-content').html();
                 }
             });
-            $(this).popover('toggle');
+            jQuery(this).popover('toggle');
         },
-
         // Render the event (appointment) to the fullcalendar
         eventRender: function(event, element, view) {
-            return element.html(event.start.format("hh:mma").toUpperCase()
-                + "-" + event.end.format("hh:mma").toUpperCase()
+            return element.html(event.start.format("hh:mm a").toUpperCase()
+                + "-" + event.end.format("hh:mm a").toUpperCase()
                 + ': ' + event.title);
+        },
+        loading: function(isLoading, view) {
+
         }
     }); // full calendar initialized
 
     // Create the event (appointment), call fullCalendar to render it, and send it to the server.
-    $(document).on('submit', '#calendar-form', function(e) {
+    jQuery(document).on('submit', '#calendar-form', function(e) {
         e.preventDefault(); // prevent refresh on submit
-        var description = $(this).find("#description").val();
-        var beginDateTime = $(this).find("#beginDate").val() + " " + $(this).find("#beginTime").val();
-        var endDateTime = $(this).find("#endDate").val() + " " + $(this).find("#endTime").val();
+        var description = jQuery(this).find("#description").val();
+        var beginDateTime = jQuery(this).find("#beginDate").val() + " " + jQuery(this).find("#beginTime").val();
+        var endDateTime = jQuery(this).find("#endDate").val() + " " + jQuery(this).find("#endTime").val();
+        var beginDateTimeFromEpoch = jQuery.fullCalendar.moment(beginDateTime, 'YYYY-MM-DD hh:mm a').valueOf();
+        var endDateTimeFromEpoch = jQuery.fullCalendar.moment(endDateTime, 'YYYY-MM-DD hh:mm a').valueOf();
+        var currentDateTime = new moment().valueOf();
+
 
         var event = {
             title: description,
-            start: $.fullCalendar.moment(beginDateTime, 'YYYY-MM-DD hh:mm a'),
-            end: $.fullCalendar.moment(endDateTime, 'YYYY-MM-DD hh:mm a'),
+            start: jQuery.fullCalendar.moment.utc(beginDateTime, 'YYYY-MM-DD hh:mm a'),
+            end: jQuery.fullCalendar.moment.utc(endDateTime, 'YYYY-MM-DD hh:mm a'),
             allDay: false,
             editable: true,
             backgroundColor: 'grey'
@@ -64,20 +74,25 @@ $(document).ready(function() {
         // Do Ajax call.  Render event to calendar if call succeeds; else, don't.
         jQuery.ajax({
             'type': 'POST',
-            'url': 'localhost:8080/apptbook/' + "?description=" + description,
+            'url': 'http://localhost:8080/apptbook/create',
+            'dataType': 'JSON',
             'data': {
-                'description': description,
-                'beginTime': beginDateTime,
-                'endDateTime': endDateTime
+                'hashkey': currentDateTime,
+                'event': JSON.stringify(event)
             },
             'timeout': 5000,
-            'success': function (data) {
-                $('#calendar').fullCalendar('renderEvent', event, true);
+            'success': function (event) {
+                jQuery('#calendar').fullCalendar('renderEvent', event, true);
+                console.log("\nRendering event:\nDescription: " + description + "\nbeginDateTime: " + beginDateTime
+                    + "\nendDateTime: " + endDateTime + "\nbeginDateTimeFromEpoch" + beginDateTimeFromEpoch
+                    + "\nendDateTimeFromEpoch" + endDateTimeFromEpoch
+                    + "\nstart: " + JSON.stringify(event.start) + "\nend: " + JSON.stringify(event.end));
             },
-            error: function() {
-                alert("Failed to write appointment to server.")
-            }
+            'error': function(callbackEvent) {
+                alert("Failed to write appointment data to server. " + callbackEvent );
+                }
         });
+
     });
 });
 
@@ -90,7 +105,7 @@ $(document).ready(function() {
  select: function (start, end, jsEvent, view) {
  console.log("start: " + start.format("YYYY-MM-DD"));
  console.log("end: " + end.format("YYYY-MM-DD"));
- $(jsEvent.target).popover({
+ jQuery(jsEvent.target).popover({
 
  html: true,
  placement: 'top',
@@ -102,14 +117,14 @@ $(document).ready(function() {
 
  // create the popover
  title: function() {
- return $('#popover-head').html();
+ return jQuery('#popover-head').html();
  },
  content: function() {
- $('#popover-content').find('#beginDate').attr('value', start.format("YYYY-MM-DD"));
- $('#popover-content').find('#endDate').attr('value', end.format("YYYY-MM-DD"));
- return $('#popover-content').html();
+ jQuery('#popover-content').find('#beginDate').attr('value', start.format("YYYY-MM-DD"));
+ jQuery('#popover-content').find('#endDate').attr('value', end.format("YYYY-MM-DD"));
+ return jQuery('#popover-content').html();
  }
  });
- $(jsEvent.target).popover('toggle');
+ jQuery(jsEvent.target).popover('toggle');
  },
  */

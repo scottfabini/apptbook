@@ -13,6 +13,24 @@ This project is for CS510W Full-Stack Web Development course at Portland State U
 ## Installation
 
 The project is currently in development.  Please check back for details.
+Install postgresql to the server that will host server.js:
+https://www.postgresql.org/download/
+Configuration on a Mac OS X El Capitan localhost:
+brew install postgresql
+initdb <apptbook directory>/db -E utf8
+pg_ctl -D ./ -l logfile start
+brew tap homebrew/services
+To start postgres: brew services start postgresql 
+To stop postgres: brew services stop postgresql
+Homebrew installs the database to /usr/local/var/postgres.
+createdb apptbookdb
+brew pgadmin3
+
+Execute pgadmin3 from Applications folder.
+Create a database with columns: HashKey (numeric), Description (text),
+BeginDateTime (numeric Epoch time), EndDateTime (numeric EpochTime). 
+
+
 
 ## Tests
 

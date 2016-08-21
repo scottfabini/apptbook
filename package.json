@@ -11,7 +11,8 @@
   "main": "./",
   "dependencies": {
     "express": "latest",
-    "pg": "latest"
+    "pg": "latest",
+    "body-parser": "latest"
   },
   "license": "MIT"
 }
