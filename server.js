@@ -83,9 +83,7 @@ app.get('/', function(req, res) {
 
 // Begin CRUD interface
 app.post('/apptbook/create', function(req, res) {
-
-    console.log("hashkey: " + parseInt(req.body.hashkey));
-    console.log("event: " + req.body.event);
+    console.log("Creating event in db: hashkey: " + parseInt(req.body.hashkey) + "event: " + req.body.event);
 
     var queryString = 'INSERT INTO apptbook (hashkey, event) VALUES ('
         + parseInt(req.body.hashkey)
@@ -106,9 +104,25 @@ app.post('/apptbook/create', function(req, res) {
 
 app.get('/apptbook/read', function(req, res) {
     console.log('Cannot get');
-    res.set('Content-Type', 'text/plain');
-    res.status(200);
-    res.end();
+
+    var queryString = "SELECT event FROM apptbook;";
+
+    /*pool.query('SELECT $1::text as name', ['foo'], function(err, result) {
+        console.log(result.rows[0].name); // output: foo
+    });*/
+
+    pool.query(queryString, function(err, result) {
+        if (err) {
+            return console.error('error running query', err);
+        }
+        res.set('Content-Type', 'text/plain');
+        console.log("GET rows: " + JSON.stringify(result.rows));
+        res.write(JSON.stringify(result.rows));
+        //console.log(result.rows[0]);
+
+        res.status(200);
+        res.end();
+    });
 });
 
 

@@ -40,18 +40,39 @@ jQuery(document).ready(function() {
                 }
             });
             jQuery(this).popover('toggle');
+
+
+
+
+
         },
         // Render the event (appointment) to the fullcalendar
         eventRender: function(event, element, view) {
             return element.html(event.start.format("hh:mm a").toUpperCase()
                 + "-" + event.end.format("hh:mm a").toUpperCase()
                 + ': ' + event.title);
-        },
-        loading: function(isLoading, view) {
-
         }
     }); // full calendar initialized
 
+    jQuery.ajax({
+        'type': 'GET',
+        'url': 'http://localhost:8080/apptbook/read',
+        'dataType': 'JSON',
+        'timeout': 5000,
+        'success': function (data) {
+            console.log("Rendering events read from server: ");
+            for (var i = 0; i < data.length; ++i) {
+                console.log(JSON.stringify(data[i]));
+                jQuery('#calendar').fullCalendar('renderEvent', JSON.parse(data[i].event), true);
+            }
+        },
+        'error': function(data) {
+            alert("Failed to write appointment data to server. Server returned " + JSON.parse(data) );
+        }
+    });
+    console.log("Loading calendar")
+
+    
     // Create the event (appointment), call fullCalendar to render it, and send it to the server.
     jQuery(document).on('submit', '#calendar-form', function(e) {
         e.preventDefault(); // prevent refresh on submit
@@ -92,6 +113,7 @@ jQuery(document).ready(function() {
                 alert("Failed to write appointment data to server. " + callbackEvent );
                 }
         });
+
 
     });
 });
