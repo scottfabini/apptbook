@@ -22,11 +22,12 @@ app.use(express.static(__dirname)); // probably want to put index/css/calendar i
 // will be read if the config is not present
 var config = {
     user: 'sfabini', //env var: PGUSER
-    database: 'apptbookdb', //env var: PGDATABASE
-    password: '', //env var: PGPASSWORD
+    //database: 'apptbookdb', //env var: PGDATABASE
+    database: 'public', //env var: PGDATABASE
+    password: 'abc123', //env var: PGPASSWORD
     port: 5432, //env var: PGPORT
     max: 10, // max number of clients in the pool
-    idleTimeoutMillis: 30000, // how long a client is allowed to remain idle before being closed
+    idleTimeoutMillis: 30000 // how long a client is allowed to remain idle before being closed
 };
 
 
@@ -107,10 +108,6 @@ app.get('/apptbook/read', function(req, res) {
 
     var queryString = "SELECT event FROM apptbook;";
 
-    /*pool.query('SELECT $1::text as name', ['foo'], function(err, result) {
-        console.log(result.rows[0].name); // output: foo
-    });*/
-
     pool.query(queryString, function(err, result) {
         if (err) {
             return console.error('error running query', err);
@@ -125,13 +122,4 @@ app.get('/apptbook/read', function(req, res) {
     });
 });
 
-
-
 app.listen(process.env.PORT || 8080);
-
-
-/*
- Init DB Data:
- INSERT INTO apptbook (hashkey, description, begin_date_time, end_date_time) VALUES (1471733200000, 'Odin Grooming', 1472083200000, 1472083200000)
- INSERT INTO apptbook (hashkey, description, begin_date_time, end_date_time) VALUES (1471733201000, 'Practice Project Presentation', 1472087200000, 1472091200000)
- */

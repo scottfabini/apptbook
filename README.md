@@ -1,6 +1,6 @@
 ## Synopsis
 
-AppointmentBook (Calendar) Full Stack Web-App using js, jQuery, Bootstrap, Ajax, fullCalendar, node.js, mySQL.
+AppointmentBook (Calendar) Full Stack Web-App using js, jQuery, bootstrap, ajax, fullCalendar, node.js, postgres.
 
 ## Code Example
 
@@ -30,6 +30,7 @@ Execute pgadmin3 from Applications folder.
 Create a database with columns: HashKey (numeric), Description (text),
 BeginDateTime (numeric Epoch time), EndDateTime (numeric EpochTime). 
 
+Configuration on an AWS AMI server:
 
 
 ## Tests
