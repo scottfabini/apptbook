@@ -13,8 +13,8 @@ This project is for CS510W Full-Stack Web Development course at Portland State U
 ## Installation
 
 Install postgresql to the server that will host server.js:
-https://www.postgresql.org/download/
-Configuration on a Mac OS X El Capitan localhost:
+https://www.postgresql.org/download/ <br>
+Configuration on a Mac OS X El Capitan localhost: <br>
 brew install postgresql <br>
 initdb <apptbook directory>/db -E utf8 <br>
 pg_ctl -D ./ -l logfile start <br>
