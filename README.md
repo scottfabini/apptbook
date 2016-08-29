@@ -23,6 +23,9 @@ brew pgadmin3 <br>
 Execute pgadmin3 from Applications folder. <br>
 Create a database with columns: hashkey (numeric), and event (varchar of length 255) <br>
 
+![alt tag](http://web.cecs.pdx.edu/~sfabini/apptbook-js.png)
+
+
 ## Contributors
 
 Not Applicable.
