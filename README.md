@@ -1,6 +1,7 @@
 ## Synopsis
 
-AppointmentBook (Calendar) Full Stack Web-App using js, jQuery, bootstrap, ajax, fullCalendar, node.js, postgres.
+AppointmentBook (Calendar) Full Stack Web-App using js, jQuery, bootstrap, ajax, fullCalendar, node.js, postgres. <br>
+An operational version running on aws can be accessed from www.scottfabini.com
 
 ## Motivation
 
