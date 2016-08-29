@@ -2,10 +2,6 @@
 
 AppointmentBook (Calendar) Full Stack Web-App using js, jQuery, bootstrap, ajax, fullCalendar, node.js, postgres.
 
-## Code Example
-
-The project is currently in development.  Please check back for details.
-
 ## Motivation
 
 This project is for CS510W Full-Stack Web Development course at Portland State University.
@@ -26,10 +22,6 @@ createdb apptbookdb <br>
 brew pgadmin3 <br>
 Execute pgadmin3 from Applications folder. <br>
 Create a database with columns: hashkey (numeric), and event (varchar of length 255) <br>
-
-## Tests
-
-The project is currently in development.  Please check back for details.
 
 ## Contributors
 
