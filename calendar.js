@@ -11,7 +11,26 @@ jQuery(document).ready(function() {
     jQuery(function () {
         jQuery('[data-toggle="popover"]').popover();
     });
-    // initialize fullcalendar
+    
+    // Reset the calendar
+    jQuery(document).on('click', '#reset', function() {
+        jQuery.ajax({
+            'type': 'GET',
+            'url': 'http://localhost:8080/apptbook/reset',
+            'dataType': 'JSON',
+            'timeout': 5000,
+            'success': function (data) {
+                console.log("Resetting events to defaults");
+            },
+            'error': function(data) {
+                alert("Failed to write appointment data to server. Server returned " + JSON.parse(data) );
+            }
+        });
+        console.log("Loading calendar");
+
+    });
+    
+    // Initialize fullcalendar
     jQuery('#calendar').fullCalendar({
         header: {
             left: 'prev,next today',
@@ -21,6 +40,7 @@ jQuery(document).ready(function() {
         eventLimit: 2,
         editable: true,
         selectable: true,
+
         // Click on a day to generate the popover
         dayClick: function(date, jsEvent, view) {
             jQuery(this).popover({
@@ -40,12 +60,8 @@ jQuery(document).ready(function() {
                 }
             });
             jQuery(this).popover('toggle');
-
-
-
-
-
         },
+        
         // Render the event (appointment) to the fullcalendar
         eventRender: function(event, element, view) {
             return element.html(event.start.format("hh:mm a").toUpperCase()
@@ -54,6 +70,7 @@ jQuery(document).ready(function() {
         }
     }); // full calendar initialized
 
+    // Read all appointments from calendar server
     jQuery.ajax({
         'type': 'GET',
         'url': 'http://localhost:8080/apptbook/read',
@@ -70,7 +87,7 @@ jQuery(document).ready(function() {
             alert("Failed to write appointment data to server. Server returned " + JSON.parse(data) );
         }
     });
-    console.log("Loading calendar")
+    console.log("Loading calendar");
 
     
     // Create the event (appointment), call fullCalendar to render it, and send it to the server.
@@ -92,7 +109,7 @@ jQuery(document).ready(function() {
             editable: true,
             backgroundColor: 'grey'
         };
-        // Do Ajax call.  Render event to calendar if call succeeds; else, don't.
+        // Do Ajax call.  Render event to calendar if call succeeds; else, raise an alert.
         jQuery.ajax({
             'type': 'POST',
             'url': 'http://localhost:8080/apptbook/create',
@@ -113,40 +130,5 @@ jQuery(document).ready(function() {
                 alert("Failed to write appointment data to server. " + callbackEvent );
                 }
         });
-
-
     });
 });
-
-
-
-
-
-
-/*
- select: function (start, end, jsEvent, view) {
- console.log("start: " + start.format("YYYY-MM-DD"));
- console.log("end: " + end.format("YYYY-MM-DD"));
- jQuery(jsEvent.target).popover({
-
- html: true,
- placement: 'top',
- container: 'body',
- allDay: true,
- editable: true,
- selectable: true,
- //unselectAuto: true,
-
- // create the popover
- title: function() {
- return jQuery('#popover-head').html();
- },
- content: function() {
- jQuery('#popover-content').find('#beginDate').attr('value', start.format("YYYY-MM-DD"));
- jQuery('#popover-content').find('#endDate').attr('value', end.format("YYYY-MM-DD"));
- return jQuery('#popover-content').html();
- }
- });
- jQuery(jsEvent.target).popover('toggle');
- },
- */

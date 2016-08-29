@@ -21,16 +21,31 @@ app.use(express.static(__dirname)); // probably want to put index/css/calendar i
 // note: all config is optional and the environment variables
 // will be read if the config is not present
 var config = {
+    // Localhost Config
     user: 'sfabini', //env var: PGUSER
-    //database: 'apptbookdb', //env var: PGDATABASE
-    database: 'public', //env var: PGDATABASE
+    database: 'apptbookdb', //env var: PGDATABASE
+    password: '', //env var: PGPASSWORD
+    port: 5432, //env var: PGPORT
+    max: 10, // max number of clients in the pool
+    idleTimeoutMillis: 30000 // how long a client is allowed to remain idle before being closed
+
+    /*
+    // CECS Config
+    user: 'sfabini', //env var: PGUSER
+    host: 'db.cecs.pdx.edu',
+    database: 'abc123', //env var: PGDATABASE
+    //database: 'public', //env var: PGDATABASE
     password: 'abc123', //env var: PGPASSWORD
     port: 5432, //env var: PGPORT
     max: 10, // max number of clients in the pool
     idleTimeoutMillis: 30000 // how long a client is allowed to remain idle before being closed
+     */
+
 };
 
 
+
+/* Begin boilerplate code for pg postgres connection */
 //this initializes a connection pool
 //it will keep idle connections open for a 30 seconds
 //and set a limit of maximum 10 idle clients
@@ -39,10 +54,6 @@ var pool = new pg.Pool(config);
 // to run a query we can acquire a client from the pool,
 // run a query on the client, and then return the client to the pool
 pool.connect(function(err, client, done) {
-    //var query = 'SELECT $1::int AS number';
-    //var arg = ['1'];
-    //  var query = "INSERT INTO apptbook (hashkey, description, begin_date_time, end_date_time) VALUES (1471733203000, 'Something completely different', 1472091200000, 1472095200000)";
-
     var query = "SELECT * FROM apptbook";
     var arg = ['1'];
     if(err) {
@@ -64,14 +75,9 @@ pool.connect(function(err, client, done) {
 });
 
 pool.on('error', function (err, client) {
-    // if an error is encountered by a client while it sits idle in the pool
-    // the pool itself will emit an error event with both the error and
-    // the client which emitted the original error
-    // this is a rare occurrence but can happen if there is a network partition
-    // between your application and the database, the database restarts, etc.
-    // and so you might want to handle it and at least log it out
     console.error('idle client error', err.message, err.stack)
-})
+});
+/* End boilerplate code for pg postgres connection */
 
 
 // Serve the index.html calendar webpage
@@ -82,7 +88,7 @@ app.get('/', function(req, res) {
     res.end();
 });
 
-// Begin CRUD interface
+// Create an appointment
 app.post('/apptbook/create', function(req, res) {
     console.log("Creating event in db: hashkey: " + parseInt(req.body.hashkey) + "event: " + req.body.event);
 
@@ -103,9 +109,8 @@ app.post('/apptbook/create', function(req, res) {
     res.end();
 });
 
+// Get all appointments
 app.get('/apptbook/read', function(req, res) {
-    console.log('Cannot get');
-
     var queryString = "SELECT event FROM apptbook;";
 
     pool.query(queryString, function(err, result) {
@@ -115,11 +120,26 @@ app.get('/apptbook/read', function(req, res) {
         res.set('Content-Type', 'text/plain');
         console.log("GET rows: " + JSON.stringify(result.rows));
         res.write(JSON.stringify(result.rows));
-        //console.log(result.rows[0]);
+        res.status(200);
+        res.end();
+    });
+});
+
+// Reset appointment book to just first two appointments
+app.get('/apptbook/reset', function(req, res) {
+    var queryString = "DELETE FROM apptbook WHERE hashkey NOT IN ( SELECT hashkey FROM apptbook LIMIT 2 );";
+
+    pool.query(queryString, function(err, result) {
+        if (err) {
+            return console.error('error running query', err);
+        }
+        res.set('Content-Type', 'text/plain');
+        console.log("DELETE rows: " + JSON.stringify(result.rows));
+        res.write(JSON.stringify(result.rows));
 
         res.status(200);
         res.end();
     });
 });
 
-app.listen(process.env.PORT || 8080);
+app.listen(process.env.PORT || 8080 || 80);

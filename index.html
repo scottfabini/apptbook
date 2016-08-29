@@ -37,7 +37,7 @@
         </div>
         <div id="navbar" class="collapse navbar-collapse">
             <ul class="nav navbar-nav">
-                <li class="active"><a href="#" onClick="window.location.reload()">Reset</a></li>
+                <li class="active"><a id="reset" href="#" onClick="window.location.reload()">Reset</a></li>
             </ul>
         </div>
     </div>
@@ -48,11 +48,13 @@
 <div class="col-md-1">
 </div>
 
+<!-- -------------- The main "#calendar" div ------------- -->
 <div class="col-md-10">
-    <!---------------- The main "#calendar" div --------------->
+
     <div id="calendar"></div>
 </div>
 
+<!---------------- The bootstrap popover --------------->
 <div>
     <div id="popover-head" class="hide">Create Appointment</div>
         <div id="popover-content" class="hide">
@@ -95,9 +97,6 @@
         </div>
     </div>
 </div>
-
-
-
 
 
 <!-- Local javascript -->
