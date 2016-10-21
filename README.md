@@ -29,7 +29,7 @@ Create a database with columns: hashkey (numeric), and event (varchar of length 
 npm update <br>
 npm start <br>
 ```
-Navigate browser to localhost:8080/index.html
+Navigate browser to localhost:8080/index.html <br>
 
 ![alt tag](http://web.cecs.pdx.edu/~sfabini/apptbook-js.png)
 
