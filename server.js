@@ -33,9 +33,9 @@ var config = {
     // CECS Config
     user: 'sfabini', //env var: PGUSER
     host: 'db.cecs.pdx.edu',
-    database: 'abc123', //env var: PGDATABASE
+    database: '', //env var: PGDATABASE
     //database: 'public', //env var: PGDATABASE
-    password: 'abc123', //env var: PGPASSWORD
+    password: '', //env var: PGPASSWORD
     port: 5432, //env var: PGPORT
     max: 10, // max number of clients in the pool
     idleTimeoutMillis: 30000 // how long a client is allowed to remain idle before being closed
