@@ -1,7 +1,7 @@
 ## Synopsis
 
 AppointmentBook (Calendar) Full Stack Web-App using js, jQuery, bootstrap, ajax, fullCalendar, node.js, postgres. <br>
-An operational version running on aws can be accessed from www.scottfabini.com <br>
+An operational version running on aws can be accessed from www.scottfabini.com <br><br>
 ![alt tag](http://web.cecs.pdx.edu/~sfabini/apptbook-js.png)
 
 ## Motivation
@@ -28,8 +28,8 @@ Execute pgadmin3 from Applications folder. <br>
 Create a database with columns: hashkey (numeric), and event (varchar of length 255)
 ![alt tag](http://web.cecs.pdx.edu/~sfabini/table_creation.png)
 ```
-npm update <br>
-npm start <br>
+npm update
+npm start
 ```
 Navigate browser to localhost:8080/index.html <br>
 
