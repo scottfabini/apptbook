@@ -1,7 +1,8 @@
 ## Synopsis
 
 AppointmentBook (Calendar) Full Stack Web-App using js, jQuery, bootstrap, ajax, fullCalendar, node.js, postgres. <br>
-An operational version running on aws can be accessed from www.scottfabini.com
+An operational version running on aws can be accessed from www.scottfabini.com <br>
+![alt tag](http://web.cecs.pdx.edu/~sfabini/apptbook-js.png)
 
 ## Motivation
 
@@ -13,26 +14,24 @@ Install postgresql to the server that will host server.js:
 https://www.postgresql.org/download/ <br>
 Configuration on a Mac OS X El Capitan localhost: <br>
 ```
-brew install postgresql <br>
-initdb ./db -E utf8 <br>
-pg_ctl -D ./ -l logfile start <br>
-brew tap homebrew/services <br>
-To start postgres: brew services start postgresql <br>
-To stop postgres: brew services stop postgresql <br>
-Homebrew installs the database to /usr/local/var/postgres. <br>
-createdb apptbookdb <br>
-brew Caskroom/versions/pgadmin3 <br>
+brew install postgresql
+initdb ./db -E utf8
+pg_ctl -D ./ -l logfile start
+brew tap homebrew/services
+To start postgres: brew services start postgresql
+To stop postgres: brew services stop postgresql
+Homebrew installs the database to /usr/local/var/postgres.
+createdb apptbookdb
+brew Caskroom/versions/pgadmin3
 ```
 Execute pgadmin3 from Applications folder. <br>
-Create a database with columns: hashkey (numeric), and event (varchar of length 255) <br>
+Create a database with columns: hashkey (numeric), and event (varchar of length 255)
 ![alt tag](http://web.cecs.pdx.edu/~sfabini/table_creation.png)
 ```
 npm update <br>
 npm start <br>
 ```
 Navigate browser to localhost:8080/index.html <br>
-
-![alt tag](http://web.cecs.pdx.edu/~sfabini/apptbook-js.png)
 
 
 ## Contributors
